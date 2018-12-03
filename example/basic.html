@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Demo</title>
+  <script src="https://unpkg.com/spritejs/dist/spritejs.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #container {
+      width: 800px;
+      height: 800px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="/js/sprite-extend-rough.js"></script>
+  <script>
+    spritejs.use(spriteRough);
+
+    const {Scene, RoughRect, RoughEllipse, RoughArc, RoughCircle, RoughPath, RoughCurve, RoughPolyline, RoughPolygon, Group, Sprite} = spritejs;
+    const scene = new Scene('#container', {
+      resolution: 'flex',
+    });
+    const fglayer = scene.layer('fglayer');
+
+    const g = new Group({
+      // fillStyle: 'dots',
+      lineCap: 'round',
+      lineJoin: 'round',
+      hachureGap: 15,
+    });
+    fglayer.append(g);
+
+    const s = new RoughArc({
+      anchor: 0.5,
+      size: [400, 200],
+      pos: [800, 800],
+      // radius: 100,
+      // strokeColor: 'red',
+      lineWidth: 10,
+      fillColor: 'blue',
+      border: [10, 'red'],
+      bowing: 6,
+      // closed: true,
+      // startAngle: -540,
+      // stopAngle: 180,
+      // bounding: 'box',
+    });
+    g.append(s);
+
+    s.on('click', (evt) => {
+      console.log(evt.offsetX, evt.offsetY);
+    });
+
+    // const s2 = new Sprite({
+    //   anchor: 0.5,
+    //   size: [200, 200],
+    //   pos: [800, 800],
+    //   border: [1, 'cyan'],
+    // });
+    // fglayer.append(s2);
+
+    const p = new RoughPath('M480,437l-29-26.4c-103-93.4-171-155-171-230.6c0-61.6,48.4-110,110-110c34.8,0,68.2,16.2,90,41.8C501.8,86.2,535.2,70,570,70c61.6,0,110,48.4,110,110c0,75.6-68,137.2-171,230.8L480,437z');
+    p.attr({
+      border: [1, 'red'],
+      lineWidth: 10,
+      fillColor: 'green',
+    });
+    g.append(p);
+
+
+    const points = [];
+    for(let i = 0; i < 20; i++) {
+      const x = (400 / 20) * i + 10;
+      const xdeg = (Math.PI / 100) * x;
+      const y = Math.round(Math.sin(xdeg) * 90) + 500;
+      points.push([x, y]);
+    }
+    // const l = new RoughCurve();
+    const l = new RoughPolygon();
+    l.attr({
+      points,
+      lineWidth: 10,
+      strokeColor: 'red',
+      fillColor: 'green',
+    });
+    g.append(l);
+
+    l.on('mouseenter', (evt) => {
+      l.attr('strokeColor', 'green');
+    });
+
+    l.on('mouseleave', (evt) => {
+      l.attr('strokeColor', 'red');
+    });
+  </script>
+</body>
+</html>
