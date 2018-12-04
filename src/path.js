@@ -176,7 +176,7 @@ export default function install({use, utils, registerNodeType, Path}) {
         }
 
         if(!this.generators[_path]) {
-          this.generators[_path] = roughCanvas.generator.path(d, options);
+          this.generators[_path] = roughCanvas.generator.path(svg.d, options);
         }
         roughCanvas.draw(this.generators[_path]);
       }
