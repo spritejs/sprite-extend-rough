@@ -272,11 +272,12 @@ export default function install({BaseSprite, Path, utils}) {
           context.font = font;
           context.textBaseline = 'middle';
           const {width} = context.measureText(label);
-          const {size} = parseFont(font);
-          if(cx === '') cx = rect[2] / 2;
-          if(cy === '') cy = rect[3] / 2;
+          const padding = this.attr('padding');
+          if(cx === '') cx = rect[2] / 2 - padding[0];
+          if(cy === '') cy = rect[3] / 2 - padding[3];
           const labelBg = this.attr('labelBg');
           if(labelBg) {
+            const {size} = parseFont(font);
             const rect = [cx - width / 2 - 6, cy - size / 2 - 6, width + 12, size + 12];
             context.fillStyle = labelBg;
             context.beginPath();
