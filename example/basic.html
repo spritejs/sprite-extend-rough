@@ -112,6 +112,13 @@
     l.on('mouseleave', (evt) => {
       l.attr('strokeColor', 'red');
     });
+
+    const r = new RoughRect({
+      size: [160, 80],
+      pos: [600, 600],
+      label: '测试一下',
+    });
+    fglayer.append(r);
   </script>
 </body>
 </html>

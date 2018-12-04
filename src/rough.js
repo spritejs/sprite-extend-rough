@@ -231,7 +231,9 @@ export default function install({BaseSprite, Path, utils}) {
         this.once('afterdraw', ({target, context}) => {
           const rect = target.originalRect;
           const [cx, cy] = [rect[2] / 2, rect[3] / 2];
-          context.font = this.attr('font');
+          const font = this.attr('font');
+          context.font = font;
+          context.textBaseline = 'middle';
           const {width} = context.measureText(label);
           context.fillStyle = this.attr('color');
           context.fillText(label, cx - width / 2, cy);

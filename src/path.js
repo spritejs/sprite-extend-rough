@@ -161,6 +161,7 @@ export default function install({use, utils, registerNodeType, Path}) {
         const [ox, oy, ow, oh] = svg.bounds;
         const [px, py] = this.pathOffset;
         const [w, h] = this.contentSize;
+        context.save();
         if(w < ow || h < oh) {
           context.beginPath();
           context.rect(0, 0, w, h);
@@ -179,6 +180,7 @@ export default function install({use, utils, registerNodeType, Path}) {
           this.generators[_path] = roughCanvas.generator.path(svg.d, options);
         }
         roughCanvas.draw(this.generators[_path]);
+        context.restore();
       }
 
       return {context: roughCanvas, options};
