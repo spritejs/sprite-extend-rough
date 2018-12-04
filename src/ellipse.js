@@ -4,19 +4,26 @@ const _ellipse = Symbol('ellipse');
 
 export default function install({use, utils, registerNodeType}) {
   const {Rough} = use(RoughPlugin);
-  const {flow, attr} = utils;
+  const {flow, attr, parseValue} = utils;
 
   class RoughEllipseAttr extends Rough.Attr {
     constructor(subject) {
       super(subject);
       this.setDefault({
         bounding: 'path',
+        curveStepCount: 9,
       });
     }
 
     @attr
     set bounding(val) {
       this.set('bounding', val);
+    }
+
+    @parseValue(parseInt)
+    @attr
+    set curveStepCount(val) {
+      this.set('curveStepCount', val);
     }
   }
 
@@ -44,6 +51,8 @@ export default function install({use, utils, registerNodeType}) {
     render(t, context) {
       const {context: roughCanvas, options} = super.render(t, context);
 
+      options.curveStepCount = this.attr('curveStepCount');
+
       const lw = this.attr('lineWidth') / 2;
       context.save();
       context.translate(lw, lw);
@@ -52,8 +61,6 @@ export default function install({use, utils, registerNodeType}) {
 
       if(!this.generators[_ellipse]) {
         this.generators[_ellipse] = roughCanvas.generator.ellipse(width / 2, height / 2, width, height, options);
-        // this.generators[_ellipse] = roughCanvas.generator.arc(width / 2, height / 2,
-        //   width, height, -Math.PI / 2, 0, true, options);
       }
       roughCanvas.draw(this.generators[_ellipse]);
 

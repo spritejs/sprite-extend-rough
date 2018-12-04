@@ -8,6 +8,11 @@ import RoughPolyline from './polyline';
 import RoughPolygon from './polygon';
 import RoughCurve from './curve';
 
+// auto use
+if(typeof window !== 'undefined' && window.spritejs) {
+  window.spritejs.use(install);
+}
+
 export function install({use}) {
   return [
     Rough,

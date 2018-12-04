@@ -14,6 +14,7 @@ export default function install({use, utils, registerNodeType}) {
         stopAngle: 90,
         closed: false,
         bounding: 'path',
+        curveStepCount: 9,
       });
     }
 
@@ -37,6 +38,12 @@ export default function install({use, utils, registerNodeType}) {
     @attr
     set bounding(val) {
       this.set('bounding', val);
+    }
+
+    @parseValue(parseInt)
+    @attr
+    set curveStepCount(val) {
+      this.set('curveStepCount', val);
     }
   }
 
@@ -90,6 +97,8 @@ export default function install({use, utils, registerNodeType}) {
 
     render(t, context) {
       const {context: roughCanvas, options} = super.render(t, context);
+
+      options.curveStepCount = this.attr('curveStepCount');
 
       const lw = this.attr('lineWidth') / 2;
       context.save();
