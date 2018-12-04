@@ -11,8 +11,15 @@ export default function install({use, utils, registerNodeType, Path}) {
       super(subject);
       this.setDefault({
         simplification: 0,
+        tolerance: 6,
         bounding: 'path',
       });
+    }
+
+    @parseValue(parseFloat)
+    @attr
+    set tolerance(val) {
+      this.set('tolerance', val);
     }
 
     @parseValue(parseFloat)
@@ -63,7 +70,7 @@ export default function install({use, utils, registerNodeType, Path}) {
       }
       if(this.path2D_) {
         this.context.save();
-        this.context.lineWidth = this.attr('lineWidth');
+        this.context.lineWidth = this.attr('lineWidth') + this.attr('tolerance');
         this.context.lineCap = this.attr('lineCap');
         this.context.lineJoin = this.attr('lineJoin');
         if(this.context.isPointInStroke(this.path2D_, ...point)) {
