@@ -3,7 +3,7 @@ import rough from 'roughjs';
 const RoughCanvasMap = new WeakMap();
 
 export default function install({BaseSprite, Path, utils}) {
-  const {parseValue, attr, inherit, parseFont, parseColorString} = utils;
+  const {parseValue, attr, inherit, parseFont, parseStringFloat, parseColorString} = utils;
 
   class RoughAttr extends Path.Attr {
     constructor(subject) {
@@ -17,6 +17,8 @@ export default function install({BaseSprite, Path, utils}) {
         hachureAngle: 'inherit',
         hachureGap: 'inherit',
         label: '',
+        labelX: '',
+        labelY: '',
         font: 'inherit',
         color: 'inherit',
       });
@@ -178,6 +180,33 @@ export default function install({BaseSprite, Path, utils}) {
     set label(val) {
       this.set('label', val);
     }
+
+    @parseValue(parseFloat)
+    @attr
+    set labelX(val) {
+      this.set('labelX', val);
+    }
+
+    @parseValue(parseFloat)
+    @attr
+    set labelY(val) {
+      this.set('labelY', val);
+    }
+
+    @parseValue(parseStringFloat)
+    @attr
+    set labelXY(val) {
+      if(val == null) {
+        val = ['', ''];
+      }
+      const [x, y] = val;
+      this.labelX = x;
+      this.labelY = y;
+    }
+
+    get labelXY() {
+      return [this.labelX, this.labelY];
+    }
   }
 
   class Rough extends BaseSprite {
@@ -230,13 +259,15 @@ export default function install({BaseSprite, Path, utils}) {
       if(label) {
         this.once('afterdraw', ({target, context}) => {
           const rect = target.originalRect;
-          const [cx, cy] = [rect[2] / 2, rect[3] / 2];
+          let [cx, cy] = this.attr('labelXY');
           const font = this.attr('font');
           context.font = font;
           context.textBaseline = 'middle';
           const {width} = context.measureText(label);
+          if(cx === '') cx = rect[2] / 2 - width / 2;
+          if(cy === '') cy = rect[3] / 2;
           context.fillStyle = this.attr('color');
-          context.fillText(label, cx - width / 2, cy);
+          context.fillText(label, cx, cy);
         });
       }
 
