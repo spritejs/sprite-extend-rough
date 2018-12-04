@@ -21,7 +21,7 @@ export default function install({use, utils, registerNodeType}) {
       context.save();
       context.translate(lw, lw);
 
-      const [width, height] = this.contentSize;
+      const [width, height] = this.attrSize;
 
       if(!this.generators[_rect]) {
         this.generators[_rect] = roughCanvas.generator.rectangle(0, 0, width, height, options);
