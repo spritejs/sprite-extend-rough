@@ -264,10 +264,10 @@ export default function install({BaseSprite, Path, utils}) {
           context.font = font;
           context.textBaseline = 'middle';
           const {width} = context.measureText(label);
-          if(cx === '') cx = rect[2] / 2 - width / 2;
+          if(cx === '') cx = rect[2] / 2;
           if(cy === '') cy = rect[3] / 2;
           context.fillStyle = this.attr('color');
-          context.fillText(label, cx, cy);
+          context.fillText(label, cx - width / 2, cy);
         });
       }
 
