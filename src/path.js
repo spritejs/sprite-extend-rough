@@ -173,7 +173,7 @@ export default function install({use, utils, registerNodeType, Path}) {
         context.translate(px, py);
 
         if(typeof Path2D !== 'undefined') {
-          this.path2D_ = new Path2D(d);
+          this.path2D_ = new Path2D(svg.d);
         }
 
         if(!this.generators[_path]) {
