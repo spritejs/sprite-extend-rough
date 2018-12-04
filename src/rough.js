@@ -3,7 +3,7 @@ import rough from 'roughjs';
 const RoughCanvasMap = new WeakMap();
 
 export default function install({BaseSprite, Path, utils}) {
-  const {parseValue, attr, inherit, parseFont} = utils;
+  const {parseValue, attr, inherit, parseFont, parseColorString} = utils;
 
   class RoughAttr extends Path.Attr {
     constructor(subject) {
@@ -18,11 +18,19 @@ export default function install({BaseSprite, Path, utils}) {
         hachureGap: 'inherit',
         label: '',
         font: 'inherit',
+        color: 'inherit',
       });
     }
 
     get enableCache() {
       return false;
+    }
+
+    @parseValue(parseColorString)
+    @attr
+    @inherit('rgba(0,0,0,1)')
+    set color(val) {
+      this.set('color', val);
     }
 
     @attr
@@ -225,7 +233,7 @@ export default function install({BaseSprite, Path, utils}) {
           const [cx, cy] = [rect[2] / 2, rect[3] / 2];
           context.font = this.attr('font');
           const {width} = context.measureText(label);
-          context.fillStyle = 'red';
+          context.fillStyle = this.attr('color');
           context.fillText(label, cx - width / 2, cy);
         });
       }
