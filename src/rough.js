@@ -20,7 +20,7 @@ export default function install({BaseSprite, Path, utils}) {
         labelX: '',
         labelY: '',
         font: 'inherit',
-        color: 'inherit',
+        labelColor: 'inherit',
       });
     }
 
@@ -31,8 +31,8 @@ export default function install({BaseSprite, Path, utils}) {
     @parseValue(parseColorString)
     @attr
     @inherit('rgba(0,0,0,1)')
-    set color(val) {
-      this.set('color', val);
+    set labelColor(val) {
+      this.set('labelColor', val);
     }
 
     @attr
@@ -266,7 +266,7 @@ export default function install({BaseSprite, Path, utils}) {
           const {width} = context.measureText(label);
           if(cx === '') cx = rect[2] / 2;
           if(cy === '') cy = rect[3] / 2;
-          context.fillStyle = this.attr('color');
+          context.fillStyle = this.attr('labelColor');
           context.fillText(label, cx - width / 2, cy);
         });
       }
