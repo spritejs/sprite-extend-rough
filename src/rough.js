@@ -21,6 +21,7 @@ export default function install({BaseSprite, Path, utils}) {
         labelY: '',
         font: 'inherit',
         labelColor: 'inherit',
+        labelBg: 'inherit',
       });
     }
 
@@ -207,6 +208,13 @@ export default function install({BaseSprite, Path, utils}) {
     get labelXY() {
       return [this.labelX, this.labelY];
     }
+
+    @parseValue(parseColorString)
+    @attr
+    @inherit('')
+    set labelBg(val) {
+      this.set('labelBg', val);
+    }
   }
 
   class Rough extends BaseSprite {
@@ -264,8 +272,17 @@ export default function install({BaseSprite, Path, utils}) {
           context.font = font;
           context.textBaseline = 'middle';
           const {width} = context.measureText(label);
+          const {size} = parseFont(font);
           if(cx === '') cx = rect[2] / 2;
           if(cy === '') cy = rect[3] / 2;
+          const labelBg = this.attr('labelBg');
+          if(labelBg) {
+            const rect = [cx - width / 2 - 6, cy - size / 2 - 6, width + 12, size + 12];
+            context.fillStyle = labelBg;
+            context.beginPath();
+            context.rect(...rect);
+            context.fill();
+          }
           context.fillStyle = this.attr('labelColor');
           context.fillText(label, cx - width / 2, cy);
         });
