@@ -1,9 +1,9 @@
-import rough from 'roughjs';
+import rough from './lib/rough';
 
 const RoughCanvasMap = new WeakMap();
 
 export default function install({BaseSprite, Path, utils}) {
-  const {parseValue, attr, inherit, parseFont, parseStringFloat, parseColorString} = utils;
+  const {parseValue, attr, inherit, parseFont, parseStringFloat, parseStringInt, parseColorString} = utils;
 
   class RoughAttr extends Path.Attr {
     constructor(subject) {
@@ -22,6 +22,8 @@ export default function install({BaseSprite, Path, utils}) {
         font: 'inherit',
         labelColor: 'inherit',
         labelBg: 'inherit',
+        clipOverflow: false,
+        lineDash: [],
       });
     }
 
@@ -215,6 +217,12 @@ export default function install({BaseSprite, Path, utils}) {
     set labelBg(val) {
       this.set('labelBg', val);
     }
+
+    @parseValue(parseStringInt)
+    @attr
+    set lineDash(val) {
+      this.set('lineDash', val);
+    }
   }
 
   class Rough extends BaseSprite {
@@ -246,7 +254,7 @@ export default function install({BaseSprite, Path, utils}) {
       }
 
       const options = {};
-      const {fillWeight, hachureGap, strokeColor: stroke, fillColor: fill} = this.attributes;
+      const {fillWeight, hachureGap, strokeColor: stroke, fillColor: fill, lineDash} = this.attributes;
 
       Object.entries({fillWeight, hachureGap, stroke, fill}).forEach(([k, v]) => {
         if(v !== '') {
@@ -261,6 +269,7 @@ export default function install({BaseSprite, Path, utils}) {
         strokeWidth,
         fillStyle,
         hachureAngle,
+        lineDash,
       });
 
       const label = this.attr('label');
